@@ -17,3 +17,5 @@ Flatten_Siamese_Network.ipynb: train a flatten siamese network on Chinese charac
 images folder: results of Chinese character generation with BigGAN at different training steps.
 
 mini_lucid_tf2 folder: used to visualize the hidden convolutional layers.
+
+https://github.com/ajbrock/BigGAN-PyTorch
