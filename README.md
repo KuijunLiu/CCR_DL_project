@@ -18,4 +18,4 @@ images folder: results of Chinese character generation with BigGAN at different 
 
 mini_lucid_tf2 folder: used to visualize the hidden convolutional layers.
 
-https://github.com/ajbrock/BigGAN-PyTorch
+For training BigGAN, we have used the code from: https://github.com/ajbrock/BigGAN-PyTorch.
