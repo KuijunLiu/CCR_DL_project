@@ -1,4 +1,4 @@
-# CCR_DL_project
+# Chinese Character Recognition DeepLearning Project
 
 The data we have used is "CASIA-HWDB".
 
