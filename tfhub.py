@@ -17,8 +17,6 @@ if gpus:
         # Memory growth must be set before GPUs have been initialized
         print(e)
 import tensorflow_hub as hub
-import data_ops as dops
-
     
 
 from sklearn.metrics import classification_report, confusion_matrix, precision_recall_curve
@@ -123,98 +121,11 @@ def train_classifier(data_name = "", tfhub_module = "efficientnet_b0", batch_siz
     if num_epoch > 0:  
         print("Start training for "+str(num_epoch)+" epochs")
         hist=model.fit(train_generator,epochs=num_epoch,steps_per_epoch=steps_per_epoch,validation_data=valid_generator,validation_steps=np.min([300,validation_steps]),callbacks=[tensorboard_callback, lrschedule, model_checkpoint_callback])
-    print("Saving Model")
-    model.save(os.path.join(model_root, model_name))  
+        print("Saving Model")
+        model.save(os.path.join(model_root, model_name))  
     
     return model, train_generator, valid_generator
-    
-    
-#     print("Starting Evaluation of the Model on Validation Data")
-#     valid_generator = valid_datagen.flow_from_directory(train_data_dir, subset="validation", shuffle=False, seed=seed, target_size=IMAGE_SIZE, batch_size=1,interpolation="bilinear")
-# #     print(valid_generator[0][0].shape)
-# #     print(valid_generator[0])
-#     Y_pred = model.predict(valid_generator, validation_steps)
-#     y_pred = np.argmax(Y_pred, axis=1)
-    
-#     print("list_hashtags: ", index_class_names)
-#     y_pred_names = [index_class_names[it] for it in y_pred]
-#     y_targ_names = [index_class_names[it] for it in valid_generator.classes]
-    
-#     print("Starting Saving the Results")
-#     miscl = [y_targ_names[it] != y_pred_names[it] for it in range(len(y_pred_names))]
-#     miscl_ind = np.where(miscl)[0]
-#     list_miscl_imgs = [[] for _ in range(len(index_class_names))]
-#     for this_hash in index_class_names:
-#         if os.path.isdir(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name), f'misclassified_{this_hash}')):
-#             shutil.rmtree(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name), f'misclassified_{this_hash}'))
-#         os.mkdir(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name), f'misclassified_{this_hash}'))
-#     for ctt, this_ind in enumerate(miscl_ind):
-# #         print(this_ind)
-#         this_im = valid_generator[this_ind][0][0,...]
-#         plt.imsave(os.path.join(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name), f'misclassified_{y_targ_names[this_ind]}'), f'index_{ctt}_predicted_{y_pred_names[this_ind]}.jpg'), this_im)
-        
-#     print('Confusion Matrix')
-#     print(confusion_matrix(valid_generator.classes, y_pred))
-#     dops.cm_analysis(y_targ_names, y_pred_names, os.path.join(os.path.join(os.path.abspath(catch_root) , model_name),"Confusion_Matrix.png"), labels=index_class_names, ymap=None, figsize=(15,15))
-#     dops.cm_analysis(y_targ_names, y_pred_names, os.path.join(os.path.join(catch_dir_model, model_name),"Confusion_Matrix.png"), labels=index_class_names, ymap=None, figsize=(15,15))
-#     print('Classification Report')
-#     clrt = classification_report(valid_generator.classes, y_pred, target_names=index_class_names)
-#     print(clrt)
-#     with open(os.path.join(os.path.join(catch_dir_model, model_name), "Result_Summary.txt"), "a") as text_file:
-#         text_file.write(clrt)
-#     with open(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name), "Result_Summary.txt"), "a") as text_file:
-#         text_file.write(clrt)
-#     Y_test = one_hot(valid_generator.classes)
-#     for i in range(len(index_class_names)):
-#         this_precision, this_recall, _ = precision_recall_curve(Y_test[:, i],np.asarray(Y_pred)[:, i])
-#         plt.plot(this_recall, this_precision)
-#         plt.savefig(os.path.join(os.path.join(catch_dir_model, model_name),"Precision_Recall_"+index_class_names[i]+".jpg"))
-#         plt.savefig(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name),"Precision_Recall_"+index_class_names[i]+".jpg"))
-#         plt.clf()
-    
-    
-#     if model_name and create_thcl:
-#         thcl_id, photo_desc_type, photo_hashtag_id, mtd_id = fops.create_thcl(model_name, index_class_names,gq = context.gq, storage_server = storage_server)
-#         print("successfuly created thcl")
-
-
-    
-# #     txt_result += "last_train_loss = " + str(last_loss) + "\n"
-# #     txt_result += "last_train_acc = " + str(last_acc) + "\n"
-# #     txt_result += "last_valid_loss = " + str(this_loss_eval) + "\n"
-# #     txt_result += "last_valid_acc = " + str(this_acc_eval) + "\n\n"
-#     txt_result = "Training is finished after " + str(time.time() - start_time) + " seconds.\n"
-#     if model_name and create_thcl:
-#         txt_result += "thcl information:\n"
-#         txt_result += "thcl_id: " + str(thcl_id) + "\n"
-#         txt_result += "photo_desc_type_id: " + str(photo_desc_type) + "\n"
-#         txt_result += "photo_hashtag_type_id: " + str(photo_hashtag_id) + "\n"
-#         txt_result += "datou_id: " + str(mtd_id) + "\n"
-
-#     with open(os.path.join(os.path.join(catch_dir_model, model_name), "Result_Summary.txt"), "a") as text_file:
-#         text_file.write(txt_result)
-#     with open(os.path.join(os.path.join(os.path.abspath(catch_root) , model_name), "Result_Summary.txt"), "a") as text_file:
-#         text_file.write(txt_result)
-    
-    
-    
-# from tqdm import tqdm
-# def inference(model_path, images_folder):
-#     loaded = tf.saved_model.load(model_path)
-#     subpro = subprocess.Popen("saved_model_cli show --dir "+model_path+" --tag_set serve --signature_def serving_default", shell=True, stdout=subprocess.PIPE)
-#     subprocess_return = subpro.stdout.read()
-#     IMAGE_SIZE = (int(str(subprocess_return).split("shape:")[1].split(",")[1]), int(str(subprocess_return).split("shape:")[1].split(",")[2]))
-#     print(IMAGE_SIZE)
-#     image_names = [os.path.join(images_folder, x) for x in os.listdir(images_folder)]
-#     all_preds = {}
-#     for iter1, imn in tqdm(enumerate(list(image_names))):
-#         im1 = plt.imread(imn)[...,:3]
-#         im1 = cv2.resize(im1, IMAGE_SIZE)
-#         prediction_scores = loaded(np.expand_dims(im1, axis=0).astype(np.float32))
-#         predicted_index = np.argmax(prediction_scores)
-#         all_preds[imn] = predicted_index
-#     print(all_preds)  
-
+ 
 
 
 
@@ -315,3 +226,4 @@ def one_hot(y_):
     y_ = np.asarray(y_).reshape(len(y_))
     n_values = np.max(y_) + 1
     return np.eye(n_values)[np.array(y_, dtype=np.int32)] 
+
